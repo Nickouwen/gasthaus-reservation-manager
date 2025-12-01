@@ -1,4 +1,4 @@
-package com.gasthaus.reservation_service.model;
+package com.gasthaus.reservation_service.models;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,18 +12,17 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Reservation {
-
-    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
     private UUID id;
-
+    
     @NotNull
     private String name;
-
+    
     @NotNull
     @Email
     private String email;
-
+    
     @NotNull
     private LocalDateTime reservationDateTime;
 
@@ -31,23 +30,17 @@ public class Reservation {
     private int numberOfGuests;
 
     @NotNull
-    private String specialRequests;
+    private LocalDateTime createdAt;
 
     @NotNull
-    private String status;
+    private LocalDateTime updatedAt;
 
-    @NotNull
-    private String createdAt;
-
-/* 
--------------------------------------
-SETTERS AND GETTERS
--------------------------------------
-*/
+    // Getters and Setters
 
     public UUID getId() {
         return id;
     }
+
     public void setId(UUID id) {
         this.id = id;
     }
@@ -55,6 +48,7 @@ SETTERS AND GETTERS
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -62,6 +56,7 @@ SETTERS AND GETTERS
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -69,6 +64,7 @@ SETTERS AND GETTERS
     public LocalDateTime getReservationDateTime() {
         return reservationDateTime;
     }
+
     public void setReservationDateTime(LocalDateTime reservationDateTime) {
         this.reservationDateTime = reservationDateTime;
     }
@@ -76,28 +72,24 @@ SETTERS AND GETTERS
     public int getNumberOfGuests() {
         return numberOfGuests;
     }
+
     public void setNumberOfGuests(int numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
     }
 
-    public String getSpecialRequests() {
-        return specialRequests;
-    }
-    public void setSpecialRequests(String specialRequests) {
-        this.specialRequests = specialRequests;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(String createdAt) {
+
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
