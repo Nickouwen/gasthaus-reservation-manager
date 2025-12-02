@@ -23,8 +23,6 @@ public class ReservationMapper {
         reservation.setEmail(reservationRequestDTO.getEmail());
         reservation.setReservationDateTime(LocalDateTime.parse(reservationRequestDTO.getReservationDateTime()));
         reservation.setNumberOfGuests(reservationRequestDTO.getNumberOfGuests());
-        reservation.setCreatedAt(LocalDateTime.parse(reservationRequestDTO.getCreatedAt()));
-        reservation.setUpdatedAt(LocalDateTime.parse(reservationRequestDTO.getUpdatedAt()));
         return reservation;
     }
 }

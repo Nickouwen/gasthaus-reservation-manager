@@ -1,6 +1,7 @@
 package com.gasthaus.reservation_service.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -20,13 +21,7 @@ public class ReservationRequestDTO {
 
     @NotNull(message = "Number of guests is required")
     @Positive(message = "Number of guests must be positive")
-    private int numberOfGuests;
-
-    @NotBlank(message = "Created at is required")
-    private String createdAt;
-
-    @NotBlank(message = "Updated at is required")
-    private String updatedAt;
+    private Integer numberOfGuests;
 
     // Setters and Getters
 
@@ -50,6 +45,7 @@ public class ReservationRequestDTO {
         this.email = email;
     }
 
+    // TODO: Add validation to ensure reservationDateTime is only allowed within business hours; Currently there is no entity relating to business hours, but this will be a must
     public @NotBlank(message = "Reservation date and time is required") String getReservationDateTime() {
         return reservationDateTime;
     }
@@ -60,33 +56,14 @@ public class ReservationRequestDTO {
         this.reservationDateTime = reservationDateTime;
     }
 
-    public @NotNull(message = "Number of guests is required") @Positive(message = "Number of guests must be positive") int getNumberOfGuests() {
+    // TODO: Add validation that checks a restaurant's business rules for number of guests per reservation
+    public @NotNull(message = "Number of guests is required") @Positive(message = "Number of guests must be positive") @Max(value = 8, message = "Number of guests must not exceed 8") Integer getNumberOfGuests() {
         return numberOfGuests;
     }
 
     public void setNumberOfGuests(
-        @NotNull(message = "Number of guests is required") @Positive(message = "Number of guests must be positive") int numberOfGuests
+        @NotNull(message = "Number of guests is required") @Positive(message = "Number of guests must be positive") @Max(value = 8, message = "Number of guests must not exceed 8") Integer numberOfGuests
     ) {
         this.numberOfGuests = numberOfGuests;
-    }
-
-    public @NotBlank(message = "Created at is required") String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(
-        @NotBlank(message = "Created at is required") String createdAt
-    ) {
-        this.createdAt = createdAt;
-    }
-
-    public @NotBlank(message = "Updated at is required") String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(
-        @NotBlank(message = "Updated at is required") String updatedAt
-    ) {
-        this.updatedAt = updatedAt;
     }
 }

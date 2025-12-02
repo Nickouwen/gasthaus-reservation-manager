@@ -5,7 +5,7 @@ public class ReservationResponseDTO {
     private String name;
     private String email;
     private String reservationDateTime;
-    private int numberOfGuests;
+    private Integer numberOfGuests;
 
 // Setters and Getters
 
@@ -41,11 +41,11 @@ public class ReservationResponseDTO {
         this.reservationDateTime = reservationDateTime;
     }
 
-    public int getNumberOfGuests() {
+    public Integer getNumberOfGuests() {
         return numberOfGuests;
     }
 
-    public void setNumberOfGuests(int numberOfGuests) {
+    public void setNumberOfGuests(Integer numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
     }
 }
