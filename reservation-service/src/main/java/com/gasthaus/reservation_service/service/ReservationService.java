@@ -56,4 +56,8 @@ public class ReservationService {
 
         return ReservationMapper.toDTO(updatedReservation);
     }
+
+    public void deleteReservation(UUID id) {
+        reservationRepository.deleteById(id);
+    }
 }

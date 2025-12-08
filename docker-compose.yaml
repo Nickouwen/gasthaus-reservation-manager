@@ -1,0 +1,54 @@
+# Use postgres/example user/password credentials
+
+services:
+
+  db:
+    image: postgres
+    container_name: reservation-service-db
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: popcorn
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+    volumes:
+      - reservation-service-db-data:/var/lib/postgresql
+    networks:
+      - internal
+
+  adminer:
+    image: adminer
+    container_name: reservation-service-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - internal
+  
+  reservation-service:
+    build: ./reservation-service
+    container_name: reservation-service
+    restart: always
+    ports:
+      - 4000:4000
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: popcorn
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: always
+    depends_on:
+      - db
+    networks:
+      - internal
+
+volumes:
+  reservation-service-db-data:
+
+networks:
+  internal:
+    driver: bridge
