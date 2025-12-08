@@ -28,6 +28,16 @@ public class ReservationService {
         return reservations.stream().map(ReservationMapper::toDTO).toList();
     }
 
+    public ReservationResponseDTO getReservationById(UUID id) {
+        Reservation reservation = reservationRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new ReservationNotFoundException("Reservation not found with id: " + id)
+            );
+
+        return ReservationMapper.toDTO(reservation);
+    }
+
     public ReservationResponseDTO createReservation(ReservationRequestDTO reservationRequestDTO) {
         if(reservationRepository.existsByEmailAndReservationDateTime(reservationRequestDTO.getEmail(), LocalDateTime.parse(reservationRequestDTO.getReservationDateTime()))) {
             throw new EmailAndReservationExistsException("A reservation with this email and date/time already exists: " + reservationRequestDTO.getEmail() + " " + reservationRequestDTO.getReservationDateTime());
