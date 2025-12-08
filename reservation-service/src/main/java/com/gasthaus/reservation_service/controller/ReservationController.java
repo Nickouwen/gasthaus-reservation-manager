@@ -38,6 +38,13 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservations);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Get a reservation by ID")
+    public ResponseEntity<ReservationResponseDTO> getReservationById(@PathVariable UUID id) {
+        ReservationResponseDTO reservationResponseDTO = reservationService.getReservationById(id);
+        return ResponseEntity.ok().body(reservationResponseDTO);
+    }
+
     @PostMapping
     @Operation(summary = "Create a new reservation")
     public ResponseEntity<ReservationResponseDTO> createReservation(@Valid @RequestBody ReservationRequestDTO reservationRequestDTO) {
