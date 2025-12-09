@@ -2,6 +2,7 @@ package com.gasthaus.reservation_service.dto;
 
 
 public class OperatingHoursResponseDTO {
+    private String id;
 
     private String day;
 
@@ -10,6 +11,14 @@ public class OperatingHoursResponseDTO {
     private String closeTime;
 
     // Setters and Getters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDay() {
         return day;
