@@ -2,9 +2,13 @@ package com.gasthaus.reservation_service.dto;
 
 public class ReservationResponseDTO {
     private String Id;
+
     private String name;
+
     private String email;
+
     private String reservationDateTime;
+    
     private Integer numberOfGuests;
 
 // Setters and Getters

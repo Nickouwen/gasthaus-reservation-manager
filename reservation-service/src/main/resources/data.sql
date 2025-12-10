@@ -8,6 +8,13 @@ CREATE TABLE IF NOT EXISTS reservation (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS operating_hours (
+    id UUID PRIMARY KEY,
+    day VARCHAR(20) UNIQUE NOT NULL,
+    open_time TIME NOT NULL,
+    close_time TIME NOT NULL
+);
+
 INSERT INTO reservation (id, name, email, reservation_date_time, number_of_guests, created_at, updated_at)
 SELECT 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'Emma Thompson', 'emma.thompson@email.com', '2025-12-05 19:00:00', 4, '2025-11-20 10:30:00', '2025-11-20 10:30:00'
 WHERE NOT EXISTS (SELECT 1 FROM reservation WHERE id = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d');
@@ -67,3 +74,31 @@ WHERE NOT EXISTS (SELECT 1 FROM reservation WHERE id = 'b4c5d6e7-f8a9-4b5c-1d2e-
 INSERT INTO reservation (id, name, email, reservation_date_time, number_of_guests, created_at, updated_at)
 SELECT 'c5d6e7f8-a9b0-4c5d-2e3f-4a5b6c7d8e9f', 'Rachel Green', 'rachel.green@email.com', '2025-12-12 18:00:00', 5, '2025-11-28 13:25:00', '2025-11-28 13:25:00'
 WHERE NOT EXISTS (SELECT 1 FROM reservation WHERE id = 'c5d6e7f8-a9b0-4c5d-2e3f-4a5b6c7d8e9f');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '11111111-1111-1111-1111-111111111111', 'Monday', '11:00', '20:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Monday');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '22222222-2222-2222-2222-222222222222', 'Tuesday', '11:00', '20:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Tuesday');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '33333333-3333-3333-3333-333333333333', 'Wednesday', '11:00', '20:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Wednesday');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '44444444-4444-4444-4444-444444444444', 'Thursday', '11:00', '20:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Thursday');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '55555555-5555-5555-5555-555555555555', 'Friday', '11:00', '22:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Friday');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '66666666-6666-6666-6666-666666666666', 'Saturday', '10:00', '22:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Saturday');
+
+INSERT INTO operating_hours (id, day, open_time, close_time)
+SELECT '77777777-7777-7777-7777-777777777777', 'Sunday', '10:00', '18:00'
+WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Sunday');

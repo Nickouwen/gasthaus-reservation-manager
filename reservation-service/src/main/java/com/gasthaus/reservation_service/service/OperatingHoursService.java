@@ -1,9 +1,11 @@
 package com.gasthaus.reservation_service.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.gasthaus.reservation_service.dto.OperatingHoursRequestDTO;
 import com.gasthaus.reservation_service.dto.OperatingHoursResponseDTO;
 import com.gasthaus.reservation_service.exception.DayExistsException;
 import com.gasthaus.reservation_service.exception.OperatingHoursNotFoundException;
@@ -24,9 +26,9 @@ public class OperatingHoursService {
         return operatingHours.stream().map(OperatingHoursMapper::toDTO).toList();
     }
 
-    public OperatingHoursResponseDTO getOperatingHoursById(String id) {
+    public OperatingHoursResponseDTO getOperatingHoursById(UUID id) {
         OperatingHours operatingHours = operatingHoursRepository
-            .findById(java.util.UUID.fromString(id))
+            .findById(id)
             .orElseThrow(
                 () -> new OperatingHoursNotFoundException("Operating hours not found with id: " + id)
             );
@@ -44,39 +46,39 @@ public class OperatingHoursService {
         return OperatingHoursMapper.toDTO(operatingHours);
     }
 
-    public OperatingHoursResponseDTO createOperatingHours(String day, String openTime, String closeTime) {
-        if(operatingHoursRepository.existsByDay(day)) {
-            throw new DayExistsException("Operating hours already exist for day: " + day);
+    public OperatingHoursResponseDTO createOperatingHours(OperatingHoursRequestDTO requestDTO) {
+        if(operatingHoursRepository.existsByDay(requestDTO.getDay())) {
+            throw new DayExistsException("Operating hours already exist for day: " + requestDTO.getDay());
         }
 
         OperatingHours newOperatingHours = operatingHoursRepository.save(
-            OperatingHoursMapper.toModel(day, openTime, closeTime)
+            OperatingHoursMapper.toModel(requestDTO)
         );
 
         return OperatingHoursMapper.toDTO(newOperatingHours);
     }
 
-    public OperatingHoursResponseDTO updateOperatingHours(String id, String day, String openTime, String closeTime) {
+    public OperatingHoursResponseDTO updateOperatingHours(UUID id, OperatingHoursRequestDTO requestDTO) {
         OperatingHours operatingHours = operatingHoursRepository
-        .findById(java.util.UUID.fromString(id))
+        .findById(id)
         .orElseThrow(
             () -> new OperatingHoursNotFoundException("Operating hours not found with id: " + id)
         );
 
-        if(operatingHoursRepository.existsByDay(day) && !operatingHours.getDay().equals(day)) {
-            throw new DayExistsException("Operating hours already exist for day: " + day);
+        if(operatingHoursRepository.existsByDay(requestDTO.getDay()) && !operatingHours.getDay().equals(requestDTO.getDay())) {
+            throw new DayExistsException("Operating hours already exist for day: " + requestDTO.getDay());
         }
 
-        operatingHours.setDay(day);
-        operatingHours.setOpenTime(java.time.LocalTime.parse(openTime));
-        operatingHours.setCloseTime(java.time.LocalTime.parse(closeTime));
+        operatingHours.setDay(requestDTO.getDay());
+        operatingHours.setOpenTime(java.time.LocalTime.parse(requestDTO.getOpenTime()));
+        operatingHours.setCloseTime(java.time.LocalTime.parse(requestDTO.getCloseTime()));
 
         OperatingHours updatedOperatingHours = operatingHoursRepository.save(operatingHours);
 
         return OperatingHoursMapper.toDTO(updatedOperatingHours);
     }
 
-    public void deleteOperatingHours(String id) {
-        operatingHoursRepository.deleteById(java.util.UUID.fromString(id));
+    public void deleteOperatingHours(UUID id) {
+        operatingHoursRepository.deleteById(id);
     }
 }

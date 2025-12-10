@@ -63,4 +63,32 @@ public class GlobalExceptionHandler {
             .contentType(MediaType.APPLICATION_JSON)
             .body(error);
     }
+
+    @ExceptionHandler(DayExistsException.class)
+    public ResponseEntity<Map<String, String>> handleDayExistsException(
+        DayExistsException ex) {
+            log.warn("Day already exists: {}", ex.getMessage());
+
+            Map<String, String> error = new HashMap<>();
+            error.put("message", ex.getMessage());
+
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(error);
+    }
+
+    @ExceptionHandler(OperatingHoursNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleOperatingHoursNotFoundException(
+        OperatingHoursNotFoundException ex) {
+            log.warn("Operating hours not found: {}", ex.getMessage());
+
+            Map<String, String> error = new HashMap<>();
+            error.put("message", ex.getMessage());
+
+            return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(error);
+    }
 }

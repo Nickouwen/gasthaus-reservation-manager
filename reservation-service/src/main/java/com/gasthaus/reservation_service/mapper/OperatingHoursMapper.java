@@ -1,5 +1,6 @@
 package com.gasthaus.reservation_service.mapper;
 
+import com.gasthaus.reservation_service.dto.OperatingHoursRequestDTO;
 import com.gasthaus.reservation_service.dto.OperatingHoursResponseDTO;
 import com.gasthaus.reservation_service.models.OperatingHours;
 
@@ -14,11 +15,11 @@ public class OperatingHoursMapper {
         return dto;
     }
 
-    public static OperatingHours toModel(String day, String openTime, String closeTime) {
+    public static OperatingHours toModel(OperatingHoursRequestDTO requestDTO) {
         OperatingHours operatingHours = new OperatingHours();
-        operatingHours.setDay(day);
-        operatingHours.setOpenTime(java.time.LocalTime.parse(openTime));
-        operatingHours.setCloseTime(java.time.LocalTime.parse(closeTime));
+        operatingHours.setDay(requestDTO.getDay());
+        operatingHours.setOpenTime(java.time.LocalTime.parse(requestDTO.getOpenTime()));
+        operatingHours.setCloseTime(java.time.LocalTime.parse(requestDTO.getCloseTime()));
         return operatingHours;
     }
 }
