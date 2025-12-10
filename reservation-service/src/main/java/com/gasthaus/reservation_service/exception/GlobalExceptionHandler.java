@@ -91,4 +91,46 @@ public class GlobalExceptionHandler {
             .contentType(MediaType.APPLICATION_JSON)
             .body(error);
     }
+
+    @ExceptionHandler(BlockedDatesNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleBlockedDatesNotFoundException(
+        BlockedDatesNotFoundException ex) {
+            log.warn("Blocked dates not found: {}", ex.getMessage());
+
+            Map<String, String> error = new HashMap<>();
+            error.put("message", ex.getMessage());
+
+            return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(error);
+    }
+
+    @ExceptionHandler(OverlapsBlockedDatesException.class)
+    public ResponseEntity<Map<String, String>> handleOverlapsBlockedDatesException(
+        OverlapsBlockedDatesException ex) {
+            log.warn("Reservation overlaps blocked dates: {}", ex.getMessage());
+
+            Map<String, String> error = new HashMap<>();
+            error.put("message", ex.getMessage());
+
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(error);
+    }
+
+    @ExceptionHandler(RestaurantNotOpenException.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantNotOpenException(
+        RestaurantNotOpenException ex) {
+            log.warn("Restaurant not open: {}", ex.getMessage());
+
+            Map<String, String> error = new HashMap<>();
+            error.put("message", ex.getMessage());
+
+            return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(error);
+    }
 }

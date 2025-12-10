@@ -15,10 +15,9 @@ import com.gasthaus.reservation_service.models.BlockedDates;
 public interface BlockedDatesRepository extends JpaRepository<BlockedDates, UUID> {
 
     @Query("SELECT bd FROM BlockedDates bd WHERE " +
-           "(bd.startDateTime <= :endTime AND bd.endDateTime >= :startTime)")
+           "(bd.startDateTime <= :reservationDateTime AND bd.endDateTime >= :reservationDateTime)")
     List<BlockedDates> findOverlappingPeriods(
-        @Param("startTime") LocalDateTime startTime,
-        @Param("endTime") LocalDateTime endTime
+        @Param("reservationDateTime") LocalDateTime reservationDateTime
     );
 
      @Query("SELECT bd FROM BlockedDates bd WHERE " +

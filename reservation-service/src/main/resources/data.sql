@@ -15,6 +15,15 @@ CREATE TABLE IF NOT EXISTS operating_hours (
     close_time TIME NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS blocked_dates (
+    id UUID PRIMARY KEY,
+    start_date_time TIMESTAMP NOT NULL,
+    end_date_time TIMESTAMP NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    block_type VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO reservation (id, name, email, reservation_date_time, number_of_guests, created_at, updated_at)
 SELECT 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d', 'Emma Thompson', 'emma.thompson@email.com', '2025-12-05 19:00:00', 4, '2025-11-20 10:30:00', '2025-11-20 10:30:00'
 WHERE NOT EXISTS (SELECT 1 FROM reservation WHERE id = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d');
@@ -92,13 +101,17 @@ SELECT '44444444-4444-4444-4444-444444444444', 'Thursday', '11:00', '20:00'
 WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Thursday');
 
 INSERT INTO operating_hours (id, day, open_time, close_time)
-SELECT '55555555-5555-5555-5555-555555555555', 'Friday', '11:00', '22:00'
+SELECT '55555555-5555-5555-5555-555555555555', 'Friday', '11:00', '20:00'
 WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Friday');
 
 INSERT INTO operating_hours (id, day, open_time, close_time)
-SELECT '66666666-6666-6666-6666-666666666666', 'Saturday', '10:00', '22:00'
+SELECT '66666666-6666-6666-6666-666666666666', 'Saturday', '10:00', '20:00'
 WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Saturday');
 
 INSERT INTO operating_hours (id, day, open_time, close_time)
-SELECT '77777777-7777-7777-7777-777777777777', 'Sunday', '10:00', '18:00'
+SELECT '77777777-7777-7777-7777-777777777777', 'Sunday', '11:00', '20:00'
 WHERE NOT EXISTS (SELECT 1 FROM operating_hours WHERE day = 'Sunday');
+
+INSERT INTO blocked_dates (id, start_date_time, end_date_time, reason, block_type, created_at)
+SELECT 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '2025-12-24 00:00:00', '2025-12-26 23:59:59', 'Christmas Holiday', 'HOLIDAY', '2025-11-15 10:00:00'
+WHERE NOT EXISTS (SELECT 1 FROM blocked_dates WHERE id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');

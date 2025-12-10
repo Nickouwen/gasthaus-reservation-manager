@@ -1,6 +1,7 @@
 
 package com.gasthaus.reservation_service.repository;
 
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,4 +19,14 @@ public interface OperatingHoursRepository extends JpaRepository<OperatingHours, 
     
     @Query("SELECT oh FROM OperatingHours oh WHERE oh.day = :day")
     Optional<OperatingHours> findByDay(@Param("day") String day);
+
+    @Query("SELECT CASE WHEN COUNT(oh) > 0 THEN true ELSE false END " +
+       "FROM OperatingHours oh WHERE " +
+       "oh.day = :dayOfWeek AND " +
+       "oh.openTime <= :reservationTime AND " +
+       "oh.closeTime >= :reservationTime")
+    boolean isWithinOperatingHours(
+    @Param("dayOfWeek") String dayOfWeek,
+    @Param("reservationTime") LocalTime reservationTime
+    );
 }

@@ -1,7 +1,7 @@
 package com.gasthaus.reservation_service.dto;
 
 public class ReservationResponseDTO {
-    private String Id;
+    private String id;
 
     private String name;
 
@@ -14,11 +14,11 @@ public class ReservationResponseDTO {
 // Setters and Getters
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
