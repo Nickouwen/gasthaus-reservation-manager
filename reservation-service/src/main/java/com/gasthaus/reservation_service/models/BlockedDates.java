@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -23,6 +24,7 @@ public class BlockedDates {
     private LocalDateTime startDateTime;
 
     @NotNull
+    @Future(message="End date and time must be in the future")
     private LocalDateTime endDateTime;
 
     @NotNull
