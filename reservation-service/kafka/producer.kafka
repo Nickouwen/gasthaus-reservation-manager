@@ -1,0 +1,5 @@
+PRODUCER test
+topic: reservation
+{
+    "test": "hello"
+}
