@@ -15,6 +15,7 @@ import com.gasthaus.reservation_service.exception.EmailAndReservationExistsExcep
 import com.gasthaus.reservation_service.exception.OverlapsBlockedDatesException;
 import com.gasthaus.reservation_service.exception.ReservationNotFoundException;
 import com.gasthaus.reservation_service.exception.RestaurantNotOpenException;
+import com.gasthaus.reservation_service.kafka.KafkaProducer;
 import com.gasthaus.reservation_service.mapper.ReservationMapper;
 import com.gasthaus.reservation_service.models.BlockedDates;
 import com.gasthaus.reservation_service.models.Reservation;
@@ -24,16 +25,19 @@ import com.gasthaus.reservation_service.repository.ReservationRepository;
 
 @Service
 public class ReservationService {
-    private ReservationRepository reservationRepository;
+    private final ReservationRepository reservationRepository;
 
-    private BlockedDatesRepository blockedDatesRepository;
+    private final BlockedDatesRepository blockedDatesRepository;
 
-    private OperatingHoursRepository operatingHoursRepository;
+    private final OperatingHoursRepository operatingHoursRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, BlockedDatesRepository blockedDatesRepository, OperatingHoursRepository operatingHoursRepository) {
+    private final KafkaProducer kafkaProducer;
+
+    public ReservationService(ReservationRepository reservationRepository, BlockedDatesRepository blockedDatesRepository, OperatingHoursRepository operatingHoursRepository, KafkaProducer kafkaProducer) {
         this.reservationRepository = reservationRepository;
         this.blockedDatesRepository = blockedDatesRepository;
         this.operatingHoursRepository = operatingHoursRepository;
+        this.kafkaProducer = kafkaProducer;
     }
 
     public List<ReservationResponseDTO> getReservations() {
@@ -75,6 +79,8 @@ public class ReservationService {
         Reservation newReservation = reservationRepository.save(
             ReservationMapper.toModel(reservationRequestDTO)
         );
+
+        kafkaProducer.sendEvent(newReservation);
 
         return ReservationMapper.toDTO(newReservation);
     }

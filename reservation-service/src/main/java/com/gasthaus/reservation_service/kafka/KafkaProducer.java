@@ -1,5 +1,6 @@
 package com.gasthaus.reservation_service.kafka;
 
+import org.slf4j.Logger;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,8 @@ import reservation.events.ReservationEvent;
 
 @Service
 public class KafkaProducer {
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(KafkaProducer.class);
 
     private final KafkaTemplate<String, byte[]> kafkaTemplate;
 
@@ -25,7 +28,10 @@ public class KafkaProducer {
                 .setTimestamp(reservation.getReservationDateTime().toString())
                 .setEventType("RESERVATION_CREATED")
                 .build();
-
-        kafkaTemplate.send("reservation-events", event.toByteArray());
+        try {
+            kafkaTemplate.send("reservation", event.toByteArray());
+        } catch (Exception e) {
+            log.error("Failed to build ReservationEvent: {}", e.getMessage());
+        }
     }
 }
